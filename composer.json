@@ -1,0 +1,13 @@
+{
+    "name": "brunogeronimo/jira-log",
+    "description": "JIRA Worklog search",
+    "require": {
+        "guzzlehttp/guzzle": "^6.3"
+    },
+    "authors": [
+        {
+            "name": "Bruno Geronimo",
+            "email": "hi@bruno.works"
+        }
+    ]
+}
