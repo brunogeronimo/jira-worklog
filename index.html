@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>JIRA Worklog</title>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/code.js"></script>
+	<link rel="stylesheet" type="text/css" href="css/site.css">
+</head>
+<body>
+	<form class="loginForm">
+		<label>Os dados abaixo serão excluídos assim que esta aba for fechada.</label>
+		<div>
+			<label>URL do JIRA:</label>
+			<input type="text" name="url" errorname="URL" value="https://jira.atech.com.br">
+		</div>
+		<div>
+			<label>Usuário:</label>
+			<input type="text" name="username" errorname="Username">
+			<label>Senha:</label>
+			<input type="password" name="password" errorname="Password">
+		</div>
+		<div>
+			<input type="submit" value="Login">
+		</div>
+	</form>
+	<form class="search hide">
+		<div>
+			<label>Digite a query JQL:</label>
+			<input type="text" name="jql" placeholder="Ex.: Sprint = 'Sprint 8'" value="Sprint = 'Sprint 8'">
+			<input type="submit" value="Run search">
+		</div>
+	</form>
+	<div class="status hide">
+		<label>Executando query...</label>
+	</div>
+	<div class="results hide"></div>
+</body>
+</html>
