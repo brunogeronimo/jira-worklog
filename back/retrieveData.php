@@ -68,7 +68,7 @@
 			$auxJira['sprint'] = $sprintAux[2];
 			$auxJira['worklogs'] = array();
 			foreach ($resIssueAux->worklog->worklogs as $worklog) {
-				$created = new DateTime($worklog->created);
+				$created = new DateTime($worklog->started);
 				$auxJira['worklogs'][] = array(
 						"author" => ($worklog->author->displayName . " [{$worklog->author->name}]"),
 						"created" => $created->format("d/m/Y"),
