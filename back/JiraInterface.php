@@ -12,7 +12,10 @@
 
 		private const JIRA_DEFAULT_API_URL = '/rest/api/2';
 
-		public function __construct(array $config = []){
+		public function __construct($config = []){
+			if (!is_array($config)){
+				throw new Exception("Config variable must be an array");
+			}
 			if (isset($config['username'])){
 				$this->username = $username;
 			}
@@ -62,7 +65,10 @@
 			return $this;
 		}
 
-		public function setDebug(bool $debug = false){
+		public function setDebug($debug = false){
+			if (!is_bool($debug)){
+				throw new Exception("Debug variable must be a boolean");
+			}
 			$this->debug = $debug;
 			return $this;
 		}
@@ -140,7 +146,10 @@
 			return $formattedJira;
 		}
 
-		private function retrieveJiraInformation(array $links = []){
+		private function retrieveJiraInformation($links = []){
+			if (!is_array($links)){
+				throw new Exception("Links variable must be an array");
+			}
 			$jiras = array();
 			foreach ($links as $link) {
 				$resIssue = json_decode($this->getClient()->get($link,
@@ -156,7 +165,10 @@
 			return JiraResult::create($jiras);
 		}
 
-		public function runQuery($jql = '', array &$statistics = null){
+		public function runQuery($jql = '', &$statistics = null){
+			if ($statistics !== null && !is_array($statistics)){
+				throw new Exception("If statistics variable is set, it must be an array");
+			}
 			$urlList = $this->retrieveJiraUrlByJql($jql);
 			if ($statistics !== null){
 				$statistics['results'] = count($urlList);
