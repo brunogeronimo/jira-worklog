@@ -145,9 +145,10 @@ function totalInfo(totals){
 	var selector = $(".results");
 	var html = $(".results").html();
 	var totalizer = 0;
-	html += "<br/><br/><br/><br/><br/><br/>";
+	html += "<br/><br/><br/>";
 	html += "<table>";
-	html += 	"<tr><td>Total de JIRAs retornados: </td><td>" + totals.jiras.total + "</td></tr>"
+	html += 	"<tr><td>Total de JIRAs retornados: </td><td>" + totals.jqlResult + "</td></tr>"
+	html += 	"<tr><td>Total de JIRAs retornados com worklog: </td><td>" + totals.jiras.total + "</td></tr>"
 	html += "</table>";
 	html += "<br/><br/><br/>";
 	html += "JIRAs por Usuário";

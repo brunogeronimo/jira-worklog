@@ -156,8 +156,11 @@
 			return JiraResult::create($jiras);
 		}
 
-		public function runQuery($jql = ''){
+		public function runQuery($jql = '', array &$statistics = null){
 			$urlList = $this->retrieveJiraUrlByJql($jql);
+			if ($statistics !== null){
+				$statistics['results'] = count($urlList);
+			}
 			return $this->retrieveJiraInformation($urlList);
 		}
 

@@ -34,12 +34,14 @@
 					->setTo($to)
 					->setWorklogUsername($worklogUsername);
 
-	$queryResult = $jiraInterface->runQuery($jql)->filter($jiraFilter);
+	$statistics = array();
+	$queryResult = $jiraInterface->runQuery($jql, $statistics)->filter($jiraFilter);
 
 	$body = array();
 	$body['jiras'] = $queryResult->getResultList();
 	$body['jiras']['size'] = $queryResult->count();
 	$body['statistics'] = $queryResult->totalize();
+	$body['statistics']['jqlResult'] = $statistics['results'];
 
 	echo (json_encode($body));
 ?>
