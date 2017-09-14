@@ -18,6 +18,9 @@
 		}
 
 		public function validateWorklog(array $worklog = null){
+			if ($worklog === null){
+				throw new Exception("A worklog must be set");
+			}
 			$result = $this->isValidFrom($worklog);
 			$result = $result && $this->isValidTo($worklog);
 			$result = $result && $this->isFromUser($worklog);
@@ -41,6 +44,9 @@
 		}
 
 		private function isValidFrom(array $worklog = null){
+			if ($worklog === null){
+				throw new Exception("A worklog must be set");
+			}
 			if (!$this->hasFrom()){
 				return true;
 			}
@@ -49,6 +55,9 @@
 		}
 
 		private function isValidTo(array $worklog = null){
+			if ($worklog === null){
+				throw new Exception("A worklog must be set");
+			}
 			if (!$this->hasTo()){
 				return true;
 			}
@@ -57,6 +66,9 @@
 		}
 
 		private function isFromUser(array $worklog = null){
+			if ($worklog === null){
+				throw new Exception("A worklog must be set");
+			}
 			if ($this->worklogUsername == ""){
 				return true;
 			}
