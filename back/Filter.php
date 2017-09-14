@@ -5,11 +5,11 @@
 		private $to;
 		private $worklogUsername;
 
-		private const BR_DATE_REGEXP = '/^([0-9]{2})\/([0-9]{2})\/[0-9]{4}$/';
-		private const BR_DATE_FORMAT = 'd/m/Y H:i:s';
+		const BR_DATE_REGEXP = '/^([0-9]{2})\/([0-9]{2})\/[0-9]{4}$/';
+		const BR_DATE_FORMAT = 'd/m/Y H:i:s';
 
-		private const DB_DATE_REGEXP = '/^([0-9]{4})\-([0-9]{2})\-([0-9]{2})$/';
-		private const DB_DATE_FORMAT = 'Y-m-d H:i:s';
+		const DB_DATE_REGEXP = '/^([0-9]{4})\-([0-9]{2})\-([0-9]{2})$/';
+		const DB_DATE_FORMAT = 'Y-m-d H:i:s';
 
 		private const ZERO_TIME = " 00:00:00";
 
