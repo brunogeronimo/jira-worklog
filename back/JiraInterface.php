@@ -124,6 +124,9 @@
 				$max = count($resIssueAux->customfield_10991) - 1;
 				preg_match('/(name=)([a-zA-Z0-9 ]*)/', $resIssueAux->customfield_10991[$max], $sprintAux);
 				$formattedJira['sprint'] = $sprintAux[2];
+				if (isset($resIssueAux->customfield_10992)){
+					$formattedJira['epicLink'] = $resIssueAux->customfield_10992;
+				}
 				$formattedJira['worklogs'] = array();
 				foreach ($resIssueAux->worklog->worklogs as $worklog) {
 					$created = new DateTime($worklog->started);

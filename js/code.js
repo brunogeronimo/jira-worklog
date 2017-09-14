@@ -103,6 +103,7 @@ function makeTable(jiras){
 	html += 	"<td>Tipo</td>";
 	html += 	"<td>Status</td>";
 	html += 	"<td>Sprint</td>";
+	html += 	"<td>Epic Link</td>";
 	html += 	"<td>Data do Worklog</td>";
 	html += 	"<td>Worklog</td>";
 	html += 	"<td>Responsável</td>";
@@ -119,6 +120,7 @@ function makeTable(jiras){
 		 	html += 	"<td>" + obj.type + "</td>";
 		 	html += 	"<td>" + obj.status + "</td>";
 		 	html += 	"<td>" + obj.sprint + "</td>";
+		 	html += 	"<td>" + (obj.epicLink !== undefined ? obj.epicLink : "-") + "</td>";
 		 	html += 	"<td>" + worklog.created + "</td>";
 		 	html += 	"<td>" + secondsToHms(worklog.timeSpentSeconds) + "</td>";
 		 	html += 	"<td>" + worklog.author + "</td>";
