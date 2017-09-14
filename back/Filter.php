@@ -11,7 +11,7 @@
 		const DB_DATE_REGEXP = '/^([0-9]{4})\-([0-9]{2})\-([0-9]{2})$/';
 		const DB_DATE_FORMAT = 'Y-m-d H:i:s';
 
-		private const ZERO_TIME = " 00:00:00";
+		const ZERO_TIME = " 00:00:00";
 
 		public function __construct(){
 		}
