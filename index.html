@@ -3,8 +3,11 @@
 <head>
 	<title>JIRA Worklog</title>
 	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery-ui/jquery-ui.min.js"></script>
 	<script src="js/code.js"></script>
 	<link rel="stylesheet" type="text/css" href="css/site.css">
+	<link rel="stylesheet" type="text/css" href="js/jquery-ui/jquery-ui.min.css">
 </head>
 <body>
 	<form class="loginForm">
@@ -27,8 +30,19 @@
 		<div>
 			<label>Digite a query JQL:</label>
 			<input type="text" name="jql" placeholder="Ex.: Sprint = 'Sprint 8'" value="Sprint = 'Sprint 8'">
-			<input type="submit" value="Run search">
 		</div>
+		<div>
+			<label>Worklogs</label>
+			<label>de</label>
+			<input type="date" name="from" class="date-picker">
+			<label>até</label>
+			<input type="date" name="to" class="date-picker">
+		</div>
+		<div>
+			<label>Feitos pelo usuário: </label>
+			<input type="text" name="worklogUsername">
+		</div>
+		<input type="submit" value="Run search">
 	</form>
 	<div class="status hide">
 		<label>Executando query...</label>

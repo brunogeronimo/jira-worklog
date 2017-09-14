@@ -1,6 +1,11 @@
 var url, username, password, base64Login;
 const JIRA_API_URL = '/rest/api/2';
 ($(document).ready(function(){
+	if (navigator.userAgent.search("Firefox") >= 0){
+		$('.date-picker').datepicker({ dateFormat: 'dd/mm/yy'}); 
+	}
+	
+
 	$('.loginForm').submit(function(e){
 		e.preventDefault();
 		var goOn = true;
@@ -24,35 +29,39 @@ const JIRA_API_URL = '/rest/api/2';
 
 	$('.search').submit(function(e){
 		e.preventDefault();
-		searchInfo($(this).find('[name="jql"]').val());
+		var data = {};
+		data.jql = $(this).find('[name="jql"]').val();
+		data.from = $(this).find('[name="from"]').val();
+		data.to = $(this).find('[name="to"]').val();
+		data.worklogUsername = $(this).find('[name="worklogUsername"]').val();
+		searchInfo(data);
 		$('.status').show();
 	});
 }))
 
-function searchInfo(jql){
+function searchInfo(data){
 	$(".results").html("");
 	$('.status').hide();
 	$(".search :input").prop('disabled', true);
+	data.username = username;
+	data.password = password;
+	data.url = url;
 
 	$.ajax({
 		method: 'POST',
 		url: "/back/retrieveData.php",
 		contentType: 'application/json',
 		dataType: 'json',
-		data: JSON.stringify({
-					'jql': jql,
-					'url': url,
-					'username': username,
-					'password': password
-				}),
+		data: JSON.stringify(data),
 		success:function(data){
+			$(".status").hide();
 			if (data.status !== undefined){
 				handleStatus(data.status);
 				return;
 			}
 
 			makeTable(data.jiras);
-			//totalInfo(data.timePerUser);
+			totalInfo(data.statistics);
 			$(".search :input").prop('disabled', false);
 		},
 		error: function(data, textStatus){
@@ -80,21 +89,23 @@ function handleStatus(status){
 function makeTable(jiras){
 	var selector = $(".results");
 	var html = "";
+	var i = 0;
 	if (jiras.size === 0){
 		$(selector).html("Nenhum resultado encontrado.");
 		$(".search :input").prop('disabled', false);
-		return;
+		return false;
 	}
 	html += "<table style='width: 100%'>";
 	html += "<tr>";
-	html += 	"<td>Key</td>";
-	html += 	"<td>Priority</td>";
-	html += 	"<td>Type</td>";
+	html += 	"<td></td>";
+	html += 	"<td>JIRA</td>";
+	html += 	"<td>Prioridade</td>";
+	html += 	"<td>Tipo</td>";
 	html += 	"<td>Status</td>";
 	html += 	"<td>Sprint</td>";
+	html += 	"<td>Data do Worklog</td>";
 	html += 	"<td>Worklog</td>";
-	html += 	"<td>Usuário</td>";
-	html += 	"<td>Data</td>";
+	html += 	"<td>Responsável</td>";
 	html += "</tr>"
 	$.each(jiras, function(index, obj){
 		console.log(obj);
@@ -102,18 +113,20 @@ function makeTable(jiras){
 		$.each(obj.worklogs, function(index, worklog){
 			console.log(worklog);
 		 	html += "<tr>";
+		 	html += 	"<td>" + ++i + "</td>";
 		 	html += 	"<td>" + obj.key + "</td>";
 		 	html += 	"<td>" + obj.priority + "</td>";
 		 	html += 	"<td>" + obj.type + "</td>";
 		 	html += 	"<td>" + obj.status + "</td>";
 		 	html += 	"<td>" + obj.sprint + "</td>";
+		 	html += 	"<td>" + worklog.created + "</td>";
 		 	html += 	"<td>" + secondsToHms(worklog.timeSpentSeconds) + "</td>";
 		 	html += 	"<td>" + worklog.author + "</td>";
-		 	html += 	"<td>" + worklog.created + "</td>";
 		 	html += "</tr>";
 		});
 	});
 	html += "</table>";
+	html += "<div>" + i + " linha(s) retornada(s)</div>";
 	$(selector).html(html);
 	$(selector).show();
 }
@@ -131,34 +144,31 @@ function secondsToHms(d) {
 function totalInfo(totals){
 	var selector = $(".results");
 	var html = $(".results").html();
-	html += "<br/><br/><br/><br/><br/><br/><table>";
-		html += "<tr>";
-		html += 	"<td>Total de horas neste sprint:</td>";
-		html +=		"<td>" + secondsToHms(totals.total) + "</td>";
-		html += "</tr>";
-		html += "<tr>";
-		html += 	"<td>Total médio de horas por pessoa:</td>"
-		html += 	"<td>" + secondsToHms(totals.averageTimePerUser) + "</td>";
-		html += "</tr>";
-		html += "<tr>";
-		html += 	"<td>Total médio de horas por JIRA:</td>";
-		html += 	"<td>" + secondsToHms(totals.averageTimePerJira) + "</td>";
-		html += "</tr>";
-	html += "</table><br/><br/><br/><br/><br/><br/>";
-	html += "<div><label>Horas por usuário</label>";
+	var totalizer = 0;
+	html += "<br/><br/><br/><br/><br/><br/>";
+	html += "<table>";
+	html += 	"<tr><td>Total de JIRAs retornados: </td><td>" + totals.jiras.total + "</td></tr>"
+	html += "</table>";
+	html += "<br/><br/><br/>";
+	html += "JIRAs por Usuário";
 	html += "<table>";
 	html += 	"<tr>";
 	html += 		"<td>Usuário</td>";
-	html += 		"<td>Total de Horas</td>";
+	html += 		"<td>JIRAs</td>";
 	html += 	"</tr>";
-
-	$.each(totals.users, function(index, val){
-		html += "<tr>";
-		html += 	"<td>" + index + "</td>";
-		html += 	"<td>" + secondsToHms(val) + "</td>";
-		html += "</tr>";
+	$.each(totals.worklogPerUser, function(index, jiraList){
+		totalizer += jiraList.total;
+		html += 	"<tr>";
+		html += 		"<td>" + index + "</td>";
+		html += 		"<td>" + jiraList.total + "</td>";
+		html += 	"</tr>";
 	});
+	html += 	"<tr>";
+	html += 		"<td>Total</td>";
+	html += 		"<td>" + totalizer + "</td>";
+	html += 	"</tr>";
 	html += "</table>";
+
 	html += "</div>";
 	$(selector).html(html);
 }
