@@ -10,7 +10,7 @@
 		private $client;
 		private $debug = false;
 
-		private const JIRA_DEFAULT_API_URL = '/rest/api/2';
+		const JIRA_DEFAULT_API_URL = '/rest/api/2';
 
 		public function __construct($config = []){
 			if (!is_array($config)){
