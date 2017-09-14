@@ -5,9 +5,9 @@
 		private $to;
 		private $worklogUsername;
 
-		private const BR_DATE_REGEXP = '/^([0-9]{2})\/([0-9]{2})\/[0-9]{4}$/';
-		private const BR_DATE_FORMAT = 'd/m/Y H:i:s';
-		private const ZERO_TIME = " 00:00:00";
+		const BR_DATE_REGEXP = '/^([0-9]{2})\/([0-9]{2})\/[0-9]{4}$/';
+		const BR_DATE_FORMAT = 'd/m/Y H:i:s';
+		const ZERO_TIME = " 00:00:00";
 
 		public function __construct(){
 		}
