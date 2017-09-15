@@ -7,6 +7,10 @@
 
 		private const BR_DATE_REGEXP = '/^([0-9]{2})\/([0-9]{2})\/[0-9]{4}$/';
 		private const BR_DATE_FORMAT = 'd/m/Y H:i:s';
+
+		private const DB_DATE_REGEXP = '/^([0-9]{4})\-([0-9]{2})\-([0-9]{2})$/';
+		private const DB_DATE_FORMAT = 'Y-m-d H:i:s';
+
 		private const ZERO_TIME = " 00:00:00";
 
 		public function __construct(){
@@ -71,21 +75,42 @@
 			if ($date === null){
 				throw new Exception("You must set a date value");
 			}
-			$date = DateTime::createFromFormat(self::BR_DATE_FORMAT, ($date . self::ZERO_TIME));
-			return $date;
+			return $this->dateHandler($date, self::BR_DATE_FORMAT);
 		}
 
+		private function dateHandler(string $date = "", string $dateFormat = null){
+			if ($date === ""){
+				return false;
+			}
+
+			$format = $dateFormat;
+			if ($format === null){
+				if (preg_match(self::BR_DATE_REGEXP, $date)){
+					$format = self::BR_DATE_FORMAT;
+				}else if (preg_match(self::DB_DATE_REGEXP, $date)){
+					$format = self::DB_DATE_FORMAT;
+				}
+			}
+
+			if ($format === null){
+				return false;
+			}
+			
+			return DateTime::createFromFormat($format, ($date . self::ZERO_TIME));
+		}
 
 		public function setFrom($from = ""){
-			if (preg_match(self::BR_DATE_REGEXP, $from)){
-				$this->from = DateTime::createFromFormat(self::BR_DATE_FORMAT, ($from . self::ZERO_TIME));
+			$from = $this->dateHandler($from);
+			if ($from !== false){
+				$this->from = $from;
 			}
 			return $this;
 		}
 
 		public function setTo($to = ""){
-			if (preg_match(self::BR_DATE_REGEXP, $to)){
-				$this->to = DateTime::createFromFormat(self::BR_DATE_FORMAT, ($to . self::ZERO_TIME));
+			$to = $this->dateHandler($to);
+			if ($to !== false){
+				$this->to = $to;
 			}
 			return $this;
 		}
