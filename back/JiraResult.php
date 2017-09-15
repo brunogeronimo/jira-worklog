@@ -4,16 +4,25 @@
 	class JiraResult{
 		private $resultList;
 
-		public function __construct(array $resultList = []){
+		public function __construct($resultList = []){
+			if (!is_array($resultList)){
+				throw new Exception("resultList must be an array");
+			}
 			$this->resultList = $resultList;
 		}
 
-		public static function create(array $resultList = []){
+		public static function create($resultList = []){
+			if (!is_array($resultList)){
+				throw new Exception("resultList must be an array");
+			}
 			$instance = new self($resultList);
 			return $instance;
 		}
 
-		public function filter(Filter $filter = null){
+		public function filter($filter = null){
+			if ($filter !== null && !is_a($filter, "Filter")){
+				throw new Exception("filter must be an Filter object");
+			}
 			if ($filter === null || !$filter->hasFiltersFilled()){
 				return $this;
 			}
