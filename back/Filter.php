@@ -78,9 +78,13 @@
 			return $this->dateHandler($date, self::BR_DATE_FORMAT);
 		}
 
-		private function dateHandler(string $date = "", string $dateFormat = null){
+		private function dateHandler($date = "", $dateFormat = null){
 			if ($date === ""){
 				return false;
+			}
+
+			if ($dateFormat !== null && !is_string($dateFormat)){
+				throw new Exception("dateFormat must be a String");
 			}
 
 			$format = $dateFormat;
