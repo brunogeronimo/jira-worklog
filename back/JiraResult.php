@@ -59,10 +59,12 @@
 					$user = $worklog['user'];
 					if (!isset($worklogPerUser[$user])){
 						$worklogPerUser[$user] = array();
+						$worklogPerUser[$user]['timeSpent'] = 0;
 					}
 					if (!isset($worklogPerUser[$user][$jira])){
 						$worklogPerUser[$user][$jira] = 0;
 					}
+					$worklogPerUser[$user]['timeSpent'] += $worklog['timeSpentSeconds'];
 					$worklogPerUser[$user][$jira]++;
 				}
 			}

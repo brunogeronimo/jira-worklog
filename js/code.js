@@ -136,17 +136,30 @@ function makeTable(jiras){
 function secondsToHms(d) {
     d = Number(d);
 
-    var h = Math.floor(d / 3600);
-    var m = Math.floor(d % 3600 / 60);
-    var s = Math.floor(d % 3600 % 60);
+    var h = Math.floor(d / 3600).toString();
+    var m = Math.floor(d % 3600 / 60).toString();
+    var s = Math.floor(d % 3600 % 60).toString();
 
-    return ('0' + h).slice(-2) + ":" + ('0' + m).slice(-2) + ":" + ('0' + s).slice(-2);
+    if (h.length === 1){
+    	h = "0" + h;
+    }
+
+	if (m.length === 1){
+		m = "0" + m;
+	}
+
+	if (s.length === 1){
+		s = "0" + s;
+	}
+
+    return h + ":" + m + ":" + s;
 }
 
 function totalInfo(totals){
 	var selector = $(".results");
 	var html = $(".results").html();
 	var totalizer = 0;
+	var timeTotalizer = 0;
 	html += "<br/><br/><br/>";
 	html += "<table>";
 	html += 	"<tr><td>Total de JIRAs retornados: </td><td>" + totals.jqlResult + "</td></tr>"
@@ -158,17 +171,21 @@ function totalInfo(totals){
 	html += 	"<tr>";
 	html += 		"<td>Usuário</td>";
 	html += 		"<td>JIRAs</td>";
+	html += 		"<td>Tempo gasto (h)</td>";
 	html += 	"</tr>";
 	$.each(totals.worklogPerUser, function(index, jiraList){
+		timeTotalizer += jiraList.timeSpent;
 		totalizer += jiraList.total;
 		html += 	"<tr>";
 		html += 		"<td>" + index + "</td>";
 		html += 		"<td>" + jiraList.total + "</td>";
+		html += 		"<td>" + secondsToHms(jiraList.timeSpent) + "</td>";
 		html += 	"</tr>";
 	});
 	html += 	"<tr>";
 	html += 		"<td>Total</td>";
 	html += 		"<td>" + totalizer + "</td>";
+	html += 		"<td>" + secondsToHms(timeTotalizer) + "</td>";
 	html += 	"</tr>";
 	html += "</table>";
 

@@ -1,3 +1,4 @@
+<?php require_once(__DIR__."/back/settings.php"); ?>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,7 +15,7 @@
 		<label>Os dados abaixo serão excluídos assim que esta aba for fechada.</label>
 		<div>
 			<label>URL do JIRA:</label>
-			<input type="text" name="url" errorname="URL" value="https://jira.atech.com.br">
+			<input type="text" name="url" errorname="URL" value="<?=DEFAULT_JIRA_URL?>">
 		</div>
 		<div>
 			<label>Usuário:</label>
