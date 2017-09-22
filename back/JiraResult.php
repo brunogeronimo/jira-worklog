@@ -58,10 +58,12 @@
 		public function totalize(){
 			$worklogPerUser = array();
 			$jiras = array();
+			$jiras['total'] = 0;
 			foreach ($this->resultList as $result) {
 				$jira = $result['key'];
 				if (!isset($jiras[$jira])){
 					$jiras[$jira] = 0;
+					$jiras['total']++;
 				}
 				foreach ($result['worklogs'] as $worklog){
 					$jiras[$jira]++;
@@ -69,17 +71,15 @@
 					if (!isset($worklogPerUser[$user])){
 						$worklogPerUser[$user] = array();
 						$worklogPerUser[$user]['timeSpent'] = 0;
+						$worklogPerUser[$user]['total'] = 0;
 					}
 					if (!isset($worklogPerUser[$user][$jira])){
 						$worklogPerUser[$user][$jira] = 0;
+						$worklogPerUser[$user]['total']++;
 					}
 					$worklogPerUser[$user]['timeSpent'] += $worklog['timeSpentSeconds'];
 					$worklogPerUser[$user][$jira]++;
 				}
-			}
-			$jiras['total'] = count($jiras);
-			foreach ($worklogPerUser as &$worklogForUser) {
-				$worklogForUser['total'] = count($worklogForUser);
 			}
 			return array(
 				"worklogPerUser" => $worklogPerUser,
